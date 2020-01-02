@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HealthyWayOfLife.Model.Model.ControllerParam;
-using HealthyWayOfLife.Model.Model.ViewModel;
 using HealthyWayOfLife.Service.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthyWayOfLife.WebApi.Controllers
@@ -15,7 +15,7 @@ namespace HealthyWayOfLife.WebApi.Controllers
         {
             _authenticationHandlerService = authenticationHandlerService;
         }
-      
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<bool>> Login(LoginParameters loginParameters)
         {

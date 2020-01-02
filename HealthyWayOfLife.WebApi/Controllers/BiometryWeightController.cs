@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HealthyWayOfLife.Model.Interfaces;
 using HealthyWayOfLife.Model.Model.Database;
@@ -17,10 +18,16 @@ namespace HealthyWayOfLife.WebApi.Controllers
             _biometryRepository = biometryRepository;
         }
 
-        [HttpGet("Weight")]
+        [HttpGet]
         public async Task<List<Biometry>> Get()
         {
             return await _biometryRepository.GetBiometryForUser(new User {Id = 1});
+        }
+
+        [HttpPost]
+        public async Task<Biometry> Post([FromBody] Biometry biometry)
+        {
+            return await _biometryRepository.AddBiometryForUser(biometry);
         }
     }
 }

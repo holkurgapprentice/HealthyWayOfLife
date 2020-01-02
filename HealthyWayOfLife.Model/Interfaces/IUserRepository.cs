@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HealthyWayOfLife.Model.Enums;
 using HealthyWayOfLife.Model.Model.ControllerParam;
 using HealthyWayOfLife.Model.Model.Database;
-using HealthyWayOfLife.Model.Model.ViewModel;
+using HealthyWayOfLife.Model.Model.Dto;
 
 namespace HealthyWayOfLife.Model.Interfaces
 {

@@ -8,6 +8,7 @@ using HealthyWayOfLife.Model.Model.Database;
 
 namespace HealthyWayOfLife.Service.Services
 {
+    // todo remove old
     public class AuthorizationService
     {
         private readonly CryptoService _cryptoService;

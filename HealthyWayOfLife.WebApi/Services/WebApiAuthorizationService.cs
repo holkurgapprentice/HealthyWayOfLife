@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace HealthyWayOfLife.WebApi.Services
 {
+    // todo remove old
     public class WebApiAuthorizationService : AuthorizationService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -44,14 +45,15 @@ namespace HealthyWayOfLife.WebApi.Services
             try
             {
                 string token = _tokenService.GenerateTokenStringForUser(user);
-                _httpContextAccessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions()
-                {
-                    Expires = DateTime.UtcNow.AddMinutes(SessionTimeMinutes),
-                    Secure = true,
-                    Domain = _configuration.GetSection("WebsiteSettings")["Domain"],
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.None
-                });
+                //_httpContextAccessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions()
+                //{
+                //    Expires = DateTime.UtcNow.AddMinutes(SessionTimeMinutes),
+                //    Secure = true,
+                //    Domain = _configuration.GetSection("WebsiteSettings")["Domain"],
+                //    HttpOnly = true,
+                //    SameSite = SameSiteMode.None
+                //});
+                _httpContextAccessor.HttpContext.Response.Headers.Add("token", token);
 
                 //todo remove
                 _tokenService.GetClaimsFromToken(token);
@@ -79,15 +81,16 @@ namespace HealthyWayOfLife.WebApi.Services
         public override async Task RefreshSession(Session session, int sessionTime)
         {
             await base.RefreshSession(session, sessionTime).ConfigureAwait(false);
-            _httpContextAccessor.HttpContext.Response.Cookies.Append("jwt", session.Token, new CookieOptions()
-            {
-                Expires = DateTime.UtcNow.AddMinutes(SessionTimeMinutes),
-                Secure = true,
-                Domain = _configuration.GetSection("WebsiteSettings")["Domain"],
-                HttpOnly = true,
-                SameSite = SameSiteMode.None
+            //_httpContextAccessor.HttpContext.Response.Cookies.Append("jwt", session.Token, new CookieOptions()
+            //{
+            //    Expires = DateTime.UtcNow.AddMinutes(SessionTimeMinutes),
+            //    Secure = true,
+            //    Domain = _configuration.GetSection("WebsiteSettings")["Domain"],
+            //    HttpOnly = true,
+            //    SameSite = SameSiteMode.None
 
-            });
+            //});
+            _httpContextAccessor.HttpContext.Response.Headers.Add("token", session.Token);
         }
 
         public override async Task EndSession(string token = null)

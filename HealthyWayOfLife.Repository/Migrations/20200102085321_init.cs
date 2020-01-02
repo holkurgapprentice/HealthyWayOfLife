@@ -4,10 +4,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthyWayOfLife.Repository.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Configurations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    InsertBy = table.Column<int>(nullable: false),
+                    UpdateBy = table.Column<int>(nullable: false),
+                    InsertDate = table.Column<DateTime>(nullable: false),
+                    UpdateDate = table.Column<DateTime>(nullable: false),
+                    ConfigType = table.Column<int>(nullable: false),
+                    ConfigTypeName = table.Column<string>(nullable: true),
+                    ValueType = table.Column<int>(nullable: false),
+                    IntValue = table.Column<int>(nullable: true),
+                    DecimalValue = table.Column<decimal>(type: "decimal(19,4)", nullable: true),
+                    StringValue = table.Column<string>(nullable: true),
+                    BoolValue = table.Column<bool>(nullable: true),
+                    DateTimeValue = table.Column<DateTime>(nullable: true),
+                    OrderNumber = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Configurations", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Logs",
                 columns: table => new
@@ -21,7 +46,8 @@ namespace HealthyWayOfLife.Repository.Migrations
                     LogText = table.Column<string>(nullable: true),
                     Exception = table.Column<string>(nullable: true),
                     InnerException = table.Column<string>(nullable: true),
-                    Stack = table.Column<string>(nullable: true)
+                    Stack = table.Column<string>(nullable: true),
+                    LogType = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,6 +73,36 @@ namespace HealthyWayOfLife.Repository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Biometry",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    InsertBy = table.Column<int>(nullable: false),
+                    UpdateBy = table.Column<int>(nullable: false),
+                    InsertDate = table.Column<DateTime>(nullable: false),
+                    UpdateDate = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: true),
+                    WeightInKgs = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    HeightInCm = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    ChestInCm = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    ArmInCm = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    LegInCm = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    WaistInCm = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    DateFor = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Biometry", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Biometry_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,6 +136,11 @@ namespace HealthyWayOfLife.Repository.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Biometry_UserId",
+                table: "Biometry",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sessions_UserId",
                 table: "Sessions",
                 column: "UserId");
@@ -87,6 +148,12 @@ namespace HealthyWayOfLife.Repository.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Biometry");
+
+            migrationBuilder.DropTable(
+                name: "Configurations");
+
             migrationBuilder.DropTable(
                 name: "Logs");
 

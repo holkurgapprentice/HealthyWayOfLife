@@ -9,5 +9,6 @@ namespace HealthyWayOfLife.Model.Interfaces
     public interface IBiometryRepository
     {
         Task<List<Biometry>> GetBiometryForUser(User user);
+        Task<Biometry> AddBiometryForUser(Biometry biometry);
     }
 }

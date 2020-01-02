@@ -16,7 +16,6 @@ namespace HealthyWayOfLife.Repository.Repositories
 
         public LogRepository()
         {
-
         }
 
         public LogRepository(IScope<TContext> contextScope)

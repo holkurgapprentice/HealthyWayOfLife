@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
-using HealthyWayOfLife.Model.Enums;
 using HealthyWayOfLife.Model.Interfaces;
 using HealthyWayOfLife.Model.Model;
 using HealthyWayOfLife.Model.Model.ControllerParam;
 using HealthyWayOfLife.Model.Model.Database;
-using HealthyWayOfLife.Model.Model.ViewModel;
 using HealthyWayOfLife.Repository;
 using HealthyWayOfLife.Repository.Repositories;
 
 namespace HealthyWayOfLife.Service.Services
 {
+    // todo remove old
     public class AuthenticationHandlerService
     {
         private readonly GlobalConfig _globalConfig;

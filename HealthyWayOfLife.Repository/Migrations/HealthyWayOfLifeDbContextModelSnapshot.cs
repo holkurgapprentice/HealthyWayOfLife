@@ -143,8 +143,6 @@ namespace HealthyWayOfLife.Repository.Migrations
 
                     b.Property<DateTime>("InsertDate");
 
-                    b.Property<int>("LanguageType");
-
                     b.Property<DateTime?>("LastRefreshDate");
 
                     b.Property<string>("RemoteAddress")

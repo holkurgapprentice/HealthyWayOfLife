@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthyWayOfLife.Repository.Migrations
 {
     [DbContext(typeof(HealthyWayOfLifeDbContext))]
-    [Migration("20190805160422_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200102085321_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,87 @@ namespace HealthyWayOfLife.Repository.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("HealthyWayOfLife.Model.Model.Database.Biometry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("ArmInCm")
+                        .HasColumnType("decimal(19,4)");
+
+                    b.Property<decimal>("ChestInCm")
+                        .HasColumnType("decimal(19,4)");
+
+                    b.Property<DateTime>("DateFor");
+
+                    b.Property<decimal>("HeightInCm")
+                        .HasColumnType("decimal(19,4)");
+
+                    b.Property<int>("InsertBy");
+
+                    b.Property<DateTime>("InsertDate");
+
+                    b.Property<decimal>("LegInCm")
+                        .HasColumnType("decimal(19,4)");
+
+                    b.Property<int>("UpdateBy");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<int?>("UserId");
+
+                    b.Property<decimal>("WaistInCm")
+                        .HasColumnType("decimal(19,4)");
+
+                    b.Property<decimal>("WeightInKgs")
+                        .HasColumnType("decimal(19,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Biometry");
+                });
+
+            modelBuilder.Entity("HealthyWayOfLife.Model.Model.Database.Configuration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool?>("BoolValue");
+
+                    b.Property<int>("ConfigType");
+
+                    b.Property<string>("ConfigTypeName");
+
+                    b.Property<DateTime?>("DateTimeValue");
+
+                    b.Property<decimal?>("DecimalValue")
+                        .HasColumnType("decimal(19,4)");
+
+                    b.Property<int>("InsertBy");
+
+                    b.Property<DateTime>("InsertDate");
+
+                    b.Property<int?>("IntValue");
+
+                    b.Property<int?>("OrderNumber");
+
+                    b.Property<string>("StringValue");
+
+                    b.Property<int>("UpdateBy");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<int>("ValueType");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Configurations");
+                });
 
             modelBuilder.Entity("HealthyWayOfLife.Model.Model.Database.Log", b =>
                 {
@@ -36,6 +117,8 @@ namespace HealthyWayOfLife.Repository.Migrations
                     b.Property<DateTime>("InsertDate");
 
                     b.Property<string>("LogText");
+
+                    b.Property<int>("LogType");
 
                     b.Property<string>("Stack");
 
@@ -116,6 +199,13 @@ namespace HealthyWayOfLife.Repository.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("HealthyWayOfLife.Model.Model.Database.Biometry", b =>
+                {
+                    b.HasOne("HealthyWayOfLife.Model.Model.Database.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("HealthyWayOfLife.Model.Model.Database.Session", b =>

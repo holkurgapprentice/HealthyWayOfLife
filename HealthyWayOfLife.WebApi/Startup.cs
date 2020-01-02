@@ -1,11 +1,14 @@
-﻿using Autofac;
+﻿using System.Text;
+using Autofac;
 using HealthyWayOfLife.Model.Interfaces;
 using HealthyWayOfLife.Model.Model;
 using HealthyWayOfLife.Repository;
 using HealthyWayOfLife.Repository.Repositories;
 using HealthyWayOfLife.Service.Services;
+using HealthyWayOfLife.WebApi.Filters;
 using HealthyWayOfLife.WebApi.Options;
 using HealthyWayOfLife.WebApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HealthyWayOfLife.WebApi
 {
@@ -43,7 +47,7 @@ namespace HealthyWayOfLife.WebApi
             containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<BiometryRepository>().As<IBiometryRepository>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LogRepository<HealthyWayOfLifeDbContext>>().As<ILogRepository<HealthyWayOfLifeDbContext>>().InstancePerLifetimeScope();
-            
+
             containerBuilder.RegisterType<SeedService>().AsSelf();
             containerBuilder.RegisterType<TransactionService<HealthyWayOfLifeDbContext>>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<WebApiAuthorizationService>().As<AuthorizationService>();
@@ -54,14 +58,35 @@ namespace HealthyWayOfLife.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<HealthyWayOfLifeDbContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => 
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add(typeof(HwolValidationFilter));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<HealthyWayOfLifeDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b =>
                     b.MigrationsAssembly("HealthyWayOfLife.Repository")));
             services.AddSingleton<SeedRepository>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IConfigureOptions<ExceptionHandlerOptions>, WebApiExceptionHandlerOptions>();
             services.AddScoped<IExceptionService, WebApiExceptionService>();
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwtSignKey"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
             services.AddCors(options =>
             {
                 options.AddPolicy("MyCorsPolicy",

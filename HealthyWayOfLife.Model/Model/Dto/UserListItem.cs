@@ -1,4 +1,4 @@
-﻿namespace HealthyWayOfLife.Model.Model.ViewModel
+﻿namespace HealthyWayOfLife.Model.Model.Dto
 {
     public class UserListItem
     {

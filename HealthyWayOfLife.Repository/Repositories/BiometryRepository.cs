@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using HealthyWayOfLife.Model.Interfaces;
 using HealthyWayOfLife.Model.Model;
@@ -24,6 +22,13 @@ namespace HealthyWayOfLife.Repository.Repositories
                 throw new CustomCodeException("Invalid data for gathering user biometry, user is null or is invalid");
 
             return _context.Biometry.Where(b => b.User.Id == user.Id).ToListAsync();
+        }
+
+        public async Task<Biometry> AddBiometryForUser(Biometry biometry)
+        {
+            _context.Biometry.Add(biometry);
+            await _context.SaveChangesAsync();
+            return _context.Biometry.FirstOrDefaultAsync(b => b.Id == biometry.Id).Result;
         }
     }
 }
