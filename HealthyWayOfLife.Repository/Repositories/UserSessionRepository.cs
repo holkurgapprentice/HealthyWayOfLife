@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using HealthyWayOfLife.Model.Enums;
 using HealthyWayOfLife.Model.Interfaces;
-using HealthyWayOfLife.Model.Model;
-using HealthyWayOfLife.Model.Model.Database;
+using HealthyWayOfLife.Model.Models;
+using HealthyWayOfLife.Model.Models.Database;
 
 namespace HealthyWayOfLife.Repository.Repositories
 {
@@ -60,7 +60,7 @@ namespace HealthyWayOfLife.Repository.Repositories
             }
             catch (Exception e)
             {
-                throw new CustomCodeException(HttpStatusCode.InternalServerError, e.ToString(), LogType.Error);
+                throw new HwolException(HttpStatusCode.InternalServerError, e.ToString(), LogType.Error);
             }
 
         }

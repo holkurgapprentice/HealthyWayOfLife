@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using HealthyWayOfLife.Model.Enums;
-using HealthyWayOfLife.Model.Model.Database;
+using HealthyWayOfLife.Model.Models.Database;
 using ValueType = HealthyWayOfLife.Model.Enums.ValueType;
 
 namespace HealthyWayOfLife.Repository.Repositories

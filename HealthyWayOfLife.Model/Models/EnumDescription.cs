@@ -1,4 +1,4 @@
-﻿namespace HealthyWayOfLife.Model.Model
+﻿namespace HealthyWayOfLife.Model.Models
 {
     public class EnumDescription
     {

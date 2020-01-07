@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using HealthyWayOfLife.Model.Interfaces;
 
-namespace HealthyWayOfLife.Model.Model.Database.Base
+namespace HealthyWayOfLife.Model.Models.Database.Base
 {
     public abstract class BaseDatabaseFieldInfo
     {

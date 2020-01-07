@@ -1,6 +1,6 @@
 ﻿using System;
 using HealthyWayOfLife.Model.Interfaces;
-using HealthyWayOfLife.Model.Model;
+using HealthyWayOfLife.Model.Models;
 using HealthyWayOfLife.Repository;
 using HealthyWayOfLife.Service.Services;
 using Microsoft.AspNetCore.Http;
@@ -26,11 +26,10 @@ namespace HealthyWayOfLife.WebApi.Services
         {
             base.HandleException(exception);
 
-            if (exception is CustomCodeException customCodeException)
+            if (exception is HwolException customCodeException)
             {
-                // httpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 _httpContextAccessor.HttpContext.Response.StatusCode = (int)customCodeException.StatusCode;
-                await _httpContextAccessor.HttpContext.Response.WriteAsync(customCodeException.ExceptionString);
+                await _httpContextAccessor.HttpContext.Response.WriteAsync(customCodeException.UserInfo);
             }
         }
     }

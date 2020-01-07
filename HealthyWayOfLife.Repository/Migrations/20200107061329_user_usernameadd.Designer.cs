@@ -4,14 +4,16 @@ using HealthyWayOfLife.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HealthyWayOfLife.Repository.Migrations
 {
     [DbContext(typeof(HealthyWayOfLifeDbContext))]
-    partial class HealthyWayOfLifeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200107061329_user_usernameadd")]
+    partial class user_usernameadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

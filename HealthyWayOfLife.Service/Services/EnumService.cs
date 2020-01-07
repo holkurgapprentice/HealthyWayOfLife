@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using HealthyWayOfLife.Model.Attributes;
 using HealthyWayOfLife.Model.Enums;
-using HealthyWayOfLife.Model.Model;
+using HealthyWayOfLife.Model.Models;
 
 namespace HealthyWayOfLife.Service.Services
 {

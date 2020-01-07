@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using HealthyWayOfLife.Model.Model.Database;
+using HealthyWayOfLife.Model.Models.Database;
 
 namespace HealthyWayOfLife.Model.Interfaces
 {

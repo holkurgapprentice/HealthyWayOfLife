@@ -1,4 +1,4 @@
-﻿using HealthyWayOfLife.Model.Model.Database;
+﻿using HealthyWayOfLife.Model.Models.Database;
 
 namespace HealthyWayOfLife.Model.Interfaces
 {

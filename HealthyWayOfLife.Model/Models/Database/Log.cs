@@ -1,7 +1,7 @@
 ﻿using HealthyWayOfLife.Model.Enums;
-using HealthyWayOfLife.Model.Model.Database.Base;
+using HealthyWayOfLife.Model.Models.Database.Base;
 
-namespace HealthyWayOfLife.Model.Model.Database
+namespace HealthyWayOfLife.Model.Models.Database
 {
     public class Log : BaseDatabaseFieldInfo
     {

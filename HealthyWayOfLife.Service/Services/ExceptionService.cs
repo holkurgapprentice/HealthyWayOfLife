@@ -1,8 +1,8 @@
 ﻿using System;
 using HealthyWayOfLife.Model.Enums;
 using HealthyWayOfLife.Model.Interfaces;
-using HealthyWayOfLife.Model.Model;
-using HealthyWayOfLife.Model.Model.Database;
+using HealthyWayOfLife.Model.Models;
+using HealthyWayOfLife.Model.Models.Database;
 using HealthyWayOfLife.Repository;
 
 namespace HealthyWayOfLife.Service.Services
@@ -31,9 +31,9 @@ namespace HealthyWayOfLife.Service.Services
                 UpdateDate = DateTime.Now
             };
 
-            if (exception is CustomCodeException customCodeException)
+            if (exception is HwolException customCodeException)
             {
-                log.LogText = customCodeException.ExceptionString;
+                log.LogText = $"UserInfo:/{customCodeException.UserInfo}/ ExceptionInfo:/{customCodeException.InnerException}/";
                 log.LogType = customCodeException.LogType;
             }
 

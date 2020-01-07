@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
-using System.Text;
-using HealthyWayOfLife.Model.Model.Database.Base;
+using HealthyWayOfLife.Model.Models.Database.Base;
 
-namespace HealthyWayOfLife.Model.Model.Database
+namespace HealthyWayOfLife.Model.Models.Database
 {
     public class Biometry : BaseDatabaseFieldInfo
     {

@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
     // add authorization token for full api requests
     if (request.url.includes('api') && this.auth.isLoggedIn) {
       request = request.clone({
-        setHeaders: { Authorization: `Bearer ${this.auth.authToken}` },
+        setHeaders: { Authorization: `${this.auth.authToken}` },
       });
     }
     return next.handle(request);

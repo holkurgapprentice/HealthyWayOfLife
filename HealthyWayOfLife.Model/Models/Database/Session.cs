@@ -1,9 +1,9 @@
-﻿using HealthyWayOfLife.Model.Enums;
-using HealthyWayOfLife.Model.Model.Database.Base;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using HealthyWayOfLife.Model.Enums;
+using HealthyWayOfLife.Model.Models.Database.Base;
 
-namespace HealthyWayOfLife.Model.Model.Database
+namespace HealthyWayOfLife.Model.Models.Database
 {
     public class Session : BaseDatabaseFieldInfo
     {

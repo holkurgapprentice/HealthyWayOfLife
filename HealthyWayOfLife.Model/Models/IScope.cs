@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HealthyWayOfLife.Model.Model
+namespace HealthyWayOfLife.Model.Models
 {
     public interface IScope<out T> : IDisposable
     {

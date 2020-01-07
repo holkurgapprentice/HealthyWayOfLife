@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HealthyWayOfLife.Model.Interfaces;
-using HealthyWayOfLife.Model.Model.ControllerParam;
-using HealthyWayOfLife.Model.Model.Database;
-using HealthyWayOfLife.Model.Model.Dto;
+using HealthyWayOfLife.Model.Models.Database;
+using HealthyWayOfLife.Model.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthyWayOfLife.Repository.Repositories

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using HealthyWayOfLife.Model.Enums;
-
-namespace HealthyWayOfLife.Model.Model.ControllerParam
+﻿namespace HealthyWayOfLife.Model.Models.Dtos
 {
     public class GetUsersParams
     {

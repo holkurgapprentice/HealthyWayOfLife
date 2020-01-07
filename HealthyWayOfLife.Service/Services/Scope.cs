@@ -1,6 +1,6 @@
 ﻿using System;
 using Autofac.Features.OwnedInstances;
-using HealthyWayOfLife.Model.Model;
+using HealthyWayOfLife.Model.Models;
 
 namespace HealthyWayOfLife.Service.Services
 {

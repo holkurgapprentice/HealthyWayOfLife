@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HealthyWayOfLife.Model.Interfaces;
-using HealthyWayOfLife.Model.Model.Database;
+using HealthyWayOfLife.Model.Models.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthyWayOfLife.WebApi.Controllers
 {
-    [Route("/api/Biometry")]
-    public class BiometryWeightController : BaseController
+    public class BiometryController : BaseController
     {
         private readonly IBiometryRepository _biometryRepository;
 
-        public BiometryWeightController(IBiometryRepository biometryRepository)
+        public BiometryController(IBiometryRepository biometryRepository)
         {
             _biometryRepository = biometryRepository;
         }

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace HealthyWayOfLife.Service.Services
+namespace HealthyWayOfLife.Service.Services.Security
 {
     public class CryptoService
     {

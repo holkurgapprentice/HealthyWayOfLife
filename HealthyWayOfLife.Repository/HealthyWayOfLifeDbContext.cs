@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using HealthyWayOfLife.Model.Model.Database;
-using HealthyWayOfLife.Model.Model.Database.Base;
+using HealthyWayOfLife.Model.Models.Database;
+using HealthyWayOfLife.Model.Models.Database.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthyWayOfLife.Repository

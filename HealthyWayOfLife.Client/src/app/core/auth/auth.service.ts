@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
+import { IUser } from './auth.model';
 
 const tokenName = 'token';
 
@@ -13,35 +14,32 @@ const tokenName = 'token';
 export class AuthService {
 
   private isLogged$ = new BehaviorSubject(false);
-  private url = `${environment.apiBaseUrl}/api/auth`;
-  private user = { username: 'Luke', email: 'Luke@skywalker.com' }; // some data about user
-
+  private lastPath: string;
+  private url = `${environment.apiBaseUrl}/api/authenticate`;
+  private user: IUser;
   constructor(private http: HttpClient) {
-
   }
 
   public get isLoggedIn(): boolean {
     return this.isLogged$.value;
   }
 
-  public login(data): Observable<any> {
-    return this.http.post(`${this.url}/login`, data)
+  public login(user: IUser): Observable<any> {
+    return this.http.post(`${this.url}/login`, user)
       .pipe(
-        map((res: { user: any, token: string }) => {
+        map((result: IUser) => {
           this.user = res.user;
-          localStorage.setItem(tokenName, res.token);
-          // only for example
-          localStorage.setItem('username', res.user.username);
-          localStorage.setItem('email', res.user.email);
-          this.isLogged$.next(true);
-          return this.user;
+          sessionStorage.setItem(tokenName, res.token);
+          sessionStorage.setItem('username', res.user.username);
+          sessionStorage.setItem('email', res.user.email);
+          return res;
         }));
   }
 
   public logout() {
     return this.http.get(`${this.url}/logout`)
       .pipe(map((data) => {
-        localStorage.clear();
+        sessionStorage.clear();
         this.user = null;
         this.isLogged$.next(false);
         return of(false);
@@ -53,17 +51,16 @@ export class AuthService {
       .pipe(
         map((res: { user: any, token: string }) => {
           this.user = res.user;
-          localStorage.setItem(tokenName, res.token);
-          // only for example
-          localStorage.setItem('username', res.user.username);
-          localStorage.setItem('email', res.user.email);
+          sessionStorage.setItem(tokenName, res.token);
+          sessionStorage.setItem('username', res.user.username);
+          sessionStorage.setItem('email', res.user.email);
           this.isLogged$.next(true);
           return this.user;
         }));
   }
 
   public get authToken(): string {
-    return localStorage.getItem(tokenName);
+    return sessionStorage.getItem(tokenName);
   }
 
   public get userData(): Observable<any> {
@@ -74,10 +71,10 @@ export class AuthService {
   private loadUser(): Observable<any> {
     // use request to load user data with token
     // it's fake and useing only for example
-    if (localStorage.getItem('username') && localStorage.getItem('email')) {
+    if (sessionStorage.getItem('username') && sessionStorage.getItem('email')) {
       this.user = {
-        username: localStorage.getItem('username'),
-        email: localStorage.getItem('email'),
+        username: sessionStorage.getItem('username'),
+        email: sessionStorage.getItem('email'),
       };
     }
     return of(this.user);

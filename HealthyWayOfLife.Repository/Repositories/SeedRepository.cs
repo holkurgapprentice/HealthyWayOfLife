@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HealthyWayOfLife.Model.Enums;
 using HealthyWayOfLife.Model.Interfaces;
-using HealthyWayOfLife.Model.Model.Database;
+using HealthyWayOfLife.Model.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using ValueType = HealthyWayOfLife.Model.Enums.ValueType;
 

@@ -1,10 +1,11 @@
-﻿using System.Text;
-using Autofac;
+﻿using Autofac;
 using HealthyWayOfLife.Model.Interfaces;
-using HealthyWayOfLife.Model.Model;
+using HealthyWayOfLife.Model.Interfaces.Security;
+using HealthyWayOfLife.Model.Models;
 using HealthyWayOfLife.Repository;
 using HealthyWayOfLife.Repository.Repositories;
 using HealthyWayOfLife.Service.Services;
+using HealthyWayOfLife.Service.Services.Security;
 using HealthyWayOfLife.WebApi.Filters;
 using HealthyWayOfLife.WebApi.Options;
 using HealthyWayOfLife.WebApi.Services;
@@ -12,14 +13,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace HealthyWayOfLife.WebApi
 {
@@ -34,30 +33,31 @@ namespace HealthyWayOfLife.WebApi
 
         public void ConfigureContainer(ContainerBuilder containerBuilder)
         {
-            //Autofac
             containerBuilder.RegisterGeneric(typeof(Scope<>)).As(typeof(IScope<>)).InstancePerDependency();
 
             containerBuilder.RegisterType<GlobalConfig>().SingleInstance();
-            containerBuilder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<TransactionService<HealthyWayOfLifeDbContext>>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<CryptoService>().AsSelf();
-            containerBuilder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<EnumService>().AsSelf();
-            containerBuilder.RegisterType<SeedRepository>().As<ISeedRepository>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<BiometryRepository>().As<IBiometryRepository>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<LogRepository<HealthyWayOfLifeDbContext>>().As<ILogRepository<HealthyWayOfLifeDbContext>>().InstancePerLifetimeScope();
 
+            containerBuilder.RegisterType<BiometryRepository>().As<IBiometryRepository>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<ConfigurationRepository>().As<IConfigurationRepository>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<LogRepository<HealthyWayOfLifeDbContext>>().As<ILogRepository<HealthyWayOfLifeDbContext>>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<SeedRepository>().As<ISeedRepository>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+
+            containerBuilder.RegisterType<AuthenticationService>().As<IAuthenticationService>();
+            containerBuilder.RegisterType<CryptoService>().AsSelf();
+            containerBuilder.RegisterType<EnumService>().AsSelf();
             containerBuilder.RegisterType<SeedService>().AsSelf();
             containerBuilder.RegisterType<TransactionService<HealthyWayOfLifeDbContext>>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<WebApiAuthorizationService>().As<AuthorizationService>();
+            containerBuilder.RegisterType<TransactionService<HealthyWayOfLifeDbContext>>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<TokenService>().As<ITokenService>();
-            containerBuilder.RegisterType<AuthenticationHandlerService>().AsSelf();
-
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var jwtTokenConfigurationService = new JwtTokenConfigurationService(Configuration);
+            services.AddSingleton<JwtTokenConfigurationService>(jwtTokenConfigurationService);
+
             services.AddMvc(options =>
                 {
                     options.Filters.Add(typeof(HwolValidationFilter));
@@ -79,17 +79,11 @@ namespace HealthyWayOfLife.WebApi
                 {
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwtSignKey"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
+                    x.TokenValidationParameters = jwtTokenConfigurationService.GetValidationParameters();
                 });
             services.AddCors(options =>
             {
-                options.AddPolicy("MyCorsPolicy",
+                options.AddPolicy("CorsHwol",
                     builder => builder
 #if DEBUG
                         .WithOrigins("https://localhost:4200", "http://localhost:4200")
@@ -123,9 +117,10 @@ namespace HealthyWayOfLife.WebApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseCors("MyCorsPolicy");
             app.UseExceptionHandler();
-            app.UseHttpsRedirection();
+            app.UseCors("CorsHwol");
+            app.UseAuthentication();
+            //app.UseHttpsRedirection();
             app.UseMvc();
             using (IServiceScope scope = app.ApplicationServices.CreateScope())
             {

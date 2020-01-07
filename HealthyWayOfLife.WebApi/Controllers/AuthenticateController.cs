@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HealthyWayOfLife.Model.Model.ControllerParam;
-using HealthyWayOfLife.Service.Services;
+using HealthyWayOfLife.Model.Interfaces;
+using HealthyWayOfLife.Model.Interfaces.Security;
+using HealthyWayOfLife.Model.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +10,18 @@ namespace HealthyWayOfLife.WebApi.Controllers
 {
     public class AuthenticateController : BaseController
     {
-        private readonly AuthenticationHandlerService _authenticationHandlerService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AuthenticateController(AuthenticationHandlerService authenticationHandlerService)
+        public AuthenticateController(IAuthenticationService authenticationService)
         {
-            _authenticationHandlerService = authenticationHandlerService;
+            _authenticationService = authenticationService;
         }
+
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<bool>> Login(LoginParameters loginParameters)
+        public async Task<ActionResult<LoginRequestDto>> Login(LoginRequestDto loginRequestDto)
         {
-            return await _authenticationHandlerService.Login(loginParameters);
+            return await _authenticationService.Login(loginRequestDto);
         }
 
         [HttpPut]
@@ -36,7 +38,7 @@ namespace HealthyWayOfLife.WebApi.Controllers
             //if (!await _mediator.Send(new CheckIfPasswordResetTokenIsActiveCommand()
             //{ Guid = resetPasswordCommand.Guid }))
             //{
-            //    throw new CustomCodeException(System.Net.HttpStatusCode.Unauthorized, "Error", LogType.Warning);
+            //    throw new HwolException(System.Net.HttpStatusCode.Unauthorized, "Error", LogType.Warning);
             //}
             //return await _mediator.Send(resetPasswordCommand);
         }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using HealthyWayOfLife.Model.Enums;
-using HealthyWayOfLife.Model.Model.Database.Base;
+using HealthyWayOfLife.Model.Models.Database.Base;
 using ValueType = HealthyWayOfLife.Model.Enums.ValueType;
 
-namespace HealthyWayOfLife.Model.Model.Database
+namespace HealthyWayOfLife.Model.Models.Database
 {
     public class Configuration : BaseDatabaseFieldInfo
     {

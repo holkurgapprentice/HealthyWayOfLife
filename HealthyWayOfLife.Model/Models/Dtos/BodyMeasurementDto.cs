@@ -1,4 +1,4 @@
-﻿namespace HealthyWayOfLife.Model.Model.Dto
+﻿namespace HealthyWayOfLife.Model.Models.Dtos
 {
     public class BodyMeasurementDto
     {
