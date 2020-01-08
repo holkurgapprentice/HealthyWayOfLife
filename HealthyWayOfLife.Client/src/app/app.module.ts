@@ -44,18 +44,11 @@ import { FormsModule } from './feature/forms';
       useClass: CredentialsInterceptor,
       multi: true,
     },
-    // TODO make AuthInterceptor dummy - check sign and valid date on backend (no sql session check) and after that
-    // Refuse Or Pass next to session check and next process metod
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptor,
-    //   multi: true,
-    // },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: FakeBackendInterceptor,
-    //   multi: true,
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

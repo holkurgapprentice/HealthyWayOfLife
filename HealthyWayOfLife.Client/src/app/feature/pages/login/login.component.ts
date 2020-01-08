@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '@core/';
 import { BlankLayoutCardComponent } from '@shared/*';
-import { ILoginModel } from './login.model';
+import { IUser } from 'app/core/auth/auth.model';
 import { LoginService } from './login.service';
 
 const fg = dataItem =>
@@ -58,17 +58,15 @@ export class LoginComponent extends BlankLayoutCardComponent implements OnInit {
         .sendLoginReguest({
           email: this.loginForm.get('email').value,
           password: this.loginForm.get('password').value,
-          languageType: 1
-        } as ILoginModel)
-        .subscribe(x =>
-          console.log(x));
-      console.log(this.loginForm.getRawValue());
-      // this.authService
-      //   .login(this.loginForm.getRawValue())
-      //   .subscribe(
-      //     res => this.router.navigate(['/app/dashboard']),
-      //     error => (this.error = error.message),
-      //   );
+        } as IUser)
+        .subscribe(
+          () => {
+            this.router.navigate(['/app/dashboard']);
+          },
+          (error: any) => {
+            console.error(error);
+          },
+          );
     }
   }
 
