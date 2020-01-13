@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AuthInterceptor, AuthService, CredentialsInterceptor, HttpErrorInterceptor } from '@core/*';
+import { AuthInterceptor as AuthHttpInterceptor, AuthService, CredentialsInterceptor as CredentialsHttpInterceptor, HttpErrorInterceptor as ErrorHttpInterceptor } from '@core/*';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -36,17 +36,17 @@ import { FormsModule } from './feature/forms';
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
+      useClass: ErrorHttpInterceptor,
       multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: CredentialsInterceptor,
+      useClass: CredentialsHttpInterceptor,
       multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: AuthHttpInterceptor,
       multi: true,
     },
   ],

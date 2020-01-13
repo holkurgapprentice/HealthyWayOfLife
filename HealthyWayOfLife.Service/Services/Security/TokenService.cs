@@ -52,16 +52,7 @@ namespace HealthyWayOfLife.Service.Services.Security
         
         public string GenerateTokenStringForUser(User user) =>
             new JwtSecurityTokenHandler().WriteToken(GenerateTokenForUser(user));
-
-        public string GetTokenStringSignature(string token)
-        {
-            if (!string.IsNullOrEmpty(token) && token.Contains('.'))
-            {
-                return token.Split('.').Last();
-            }
-            throw new HwolException("Unsupported token.");
-        }
-
+        
         private SecurityToken GenerateTokenForUser(User user) =>
             _jwtTokenConfigurationService.GetJwtSecurityToken(SessionTimeMinutes, new Claim[]
             {

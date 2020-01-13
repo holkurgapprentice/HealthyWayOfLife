@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/';
 import { BlankLayoutCardComponent } from '@shared/*';
 import { IUser } from 'app/core/auth/auth.model';
-import { LoginService } from './login.service';
 
 const fg = dataItem =>
   new FormGroup({
@@ -23,18 +22,15 @@ const fg = dataItem =>
   selector: 'app-login',
   styleUrls: ['../../../shared/blank-layout-card/blank-layout-card.component.scss'],
   templateUrl: './login.component.html',
-  providers: [LoginService],
 })
 export class LoginComponent extends BlankLayoutCardComponent implements OnInit {
   public loginForm: FormGroup;
   public email;
   public password;
   public emailPattern = '^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$';
-  public error: string;
 
   constructor(
     private authService: AuthService,
-    private loginService: LoginService,
     private router: Router,
   ) {
     super();
@@ -46,27 +42,27 @@ export class LoginComponent extends BlankLayoutCardComponent implements OnInit {
 
   public ngOnInit() {
     this.authService.logout();
-    this.loginForm.valueChanges.subscribe(() => {
-      this.error = null;
-    });
   }
 
   public login() {
-    this.error = null;
     if (this.loginForm.valid) {
-      this.loginService
-        .sendLoginReguest({
+      this.authService
+        .login({
           email: this.loginForm.get('email').value,
           password: this.loginForm.get('password').value,
         } as IUser)
         .subscribe(
           () => {
-            this.router.navigate(['/app/dashboard']);
+            if (this.authService.lastPath) {
+              this.router.navigate([this.authService.lastPath]);
+            } else {
+              this.router.navigate(['/app/dashboard']);
+            }
           },
           (error: any) => {
             console.error(error);
           },
-          );
+        );
     }
   }
 

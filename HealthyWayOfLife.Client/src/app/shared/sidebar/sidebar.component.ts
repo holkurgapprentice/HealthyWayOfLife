@@ -39,9 +39,9 @@ export class SidebarComponent extends BaseSidebarComponent {
         ...[
           'biometry',
           'notes',
-        ].map(ui => ({
-          name: ui[0].toUpperCase() + ui.slice(1),
-          link: `/diary/${ui}`,
+        ].map(diary => ({
+          name: diary[0].toUpperCase() + diary.slice(1),
+          link: `/diary/${diary}`,
         })),
       ],
       icon: 'chrome_reader_mode',

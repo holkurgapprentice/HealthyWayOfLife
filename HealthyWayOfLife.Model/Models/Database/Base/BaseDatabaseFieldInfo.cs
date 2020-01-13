@@ -17,6 +17,8 @@ namespace HealthyWayOfLife.Model.Models.Database.Base
         public DateTime InsertDate { get; set; }
         [Required]
         public DateTime UpdateDate { get; set; }
+        [Required]
+        public int IsArchive { get; set; }
 
         public TBaseClass CompleteDefaultValue<TBaseClass>() where TBaseClass : BaseDatabaseFieldInfo
         {
@@ -24,6 +26,7 @@ namespace HealthyWayOfLife.Model.Models.Database.Base
             UpdateBy = 1;
             InsertDate = DateTime.Now;
             UpdateDate = DateTime.Now;
+            IsArchive = 0;
 
             return (TBaseClass)this;
         }
@@ -36,6 +39,7 @@ namespace HealthyWayOfLife.Model.Models.Database.Base
                 return;
             
             InsertBy = UpdateBy = sessionInformation.GetSession().User.Id;
+            IsArchive = 0;
         }
 
         public void CompleteUpdateInformation(ISessionInformation sessionInformation)
@@ -46,7 +50,6 @@ namespace HealthyWayOfLife.Model.Models.Database.Base
                 return;
 
             UpdateBy = sessionInformation.GetSession().User.Id;
-
         }
     }
 }

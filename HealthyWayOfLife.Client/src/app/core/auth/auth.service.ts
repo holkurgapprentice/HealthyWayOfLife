@@ -11,7 +11,7 @@ import { IUser } from './auth.model';
 export class AuthService {
 
   private isLogged$ = new BehaviorSubject(false);
-  private lastPath: string;
+  public lastPath: string;
   private url = `${environment.apiBaseUrl}authenticate`;
   private user: IUser;
 

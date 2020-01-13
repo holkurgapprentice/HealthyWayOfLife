@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HealthyWayOfLife.Model.Interfaces;
 using HealthyWayOfLife.Model.Interfaces.Security;
 using HealthyWayOfLife.Model.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;

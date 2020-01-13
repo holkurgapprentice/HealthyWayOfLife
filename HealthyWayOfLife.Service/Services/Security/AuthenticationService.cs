@@ -48,98 +48,89 @@ namespace HealthyWayOfLife.Service.Services.Security
             if (!user.IsActive)
                 throw new HwolException(HttpStatusCode.Unauthorized, "");
 
-            using (Transaction transaction = _transactionService.BeginTransaction())
-            {
-                await _userSessionRepository.CloseOpenSessions(user.Id);
-
-                request.Token = _tokenService.GenerateTokenStringForUser(user);
-                await InsertSessionToDb(CreateSession(user, request.Token));
-                await transaction.Commit();
-            }
-
+            request.Token = _tokenService.GenerateTokenStringForUser(user);
             request.Password = "";
-
+            
             return request;
         }
 
-        
-        public async Task InsertSessionToDb(Session userSession)
-        {
-            try
-            {
-                await _userSessionRepository.InsertUserSession(userSession).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                throw new HwolException(HttpStatusCode.InternalServerError, "Error adding session to Db.", LogType.Error);
-            }
+        //public async Task InsertSessionToDb(Session userSession)
+        //{
+        //    try
+        //    {
+        //        await _userSessionRepository.InsertUserSession(userSession).ConfigureAwait(false);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new HwolException(HttpStatusCode.InternalServerError, "Error adding session to Db.", LogType.Error);
+        //    }
 
-        }
+        //}
 
-        public Session CreateSession(User user, string token)
-        {
-            var result = new Session()
-            {
-                User = user
-            };
+        //public Session CreateSession(User user, string token)
+        //{
+        //    var result = new Session()
+        //    {
+        //        User = user
+        //    };
 
-            result.RemoteAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-            result.SessionState = SessionState.Open;
-            result.StartTime = DateTime.UtcNow;
-            result.ExpirationDate = DateTime.UtcNow.AddMinutes(SessionTimeMinutes);
-            result.Token = token;
+        //    result.RemoteAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        //    result.SessionState = SessionState.Open;
+        //    result.StartTime = DateTime.UtcNow;
+        //    result.ExpirationDate = DateTime.UtcNow.AddMinutes(SessionTimeMinutes);
+        //    result.Token = token;
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public async Task RefreshSession(Session session, int sessionTime)
-        {
-            if (session is null)
-            {
-                throw new HwolException(HttpStatusCode.Forbidden, "Brak tokenu.", LogType.Warning);
-            }
+        //public async Task RefreshSession(Session session, int sessionTime)
+        //{
+        //    if (session is null)
+        //    {
+        //        throw new HwolException(HttpStatusCode.Forbidden, "Brak tokenu.", LogType.Warning);
+        //    }
 
-            if (session.ExpirationDate.Subtract(DateTime.UtcNow).TotalMinutes < 0)
-            {
-                session.SessionState = SessionState.Closed;
-                session.EndTime = DateTime.UtcNow;
-                await _userSessionRepository.UpdateSessionRefreshInfo(session);
-                throw new HwolException(HttpStatusCode.Forbidden, "", LogType.Warning);
-            }
+        //    if (session.ExpirationDate.Subtract(DateTime.UtcNow).TotalMinutes < 0)
+        //    {
+        //        session.SessionState = SessionState.Closed;
+        //        session.EndTime = DateTime.UtcNow;
+        //        await _userSessionRepository.UpdateSessionRefreshInfo(session);
+        //        throw new HwolException(HttpStatusCode.Forbidden, "", LogType.Warning);
+        //    }
 
-            if (session.SessionState != SessionState.Open)
-            {
-                throw new HwolException(HttpStatusCode.Forbidden, "", LogType.Warning);
-            }
+        //    if (session.SessionState != SessionState.Open)
+        //    {
+        //        throw new HwolException(HttpStatusCode.Forbidden, "", LogType.Warning);
+        //    }
 
-            session.LastRefreshDate = DateTime.UtcNow;
-            session.ExpirationDate = DateTime.UtcNow.AddMinutes(sessionTime);
-            await _userSessionRepository.UpdateSessionRefreshInfo(session);
-            //todo zwroc nowy token
-        }
+        //    session.LastRefreshDate = DateTime.UtcNow;
+        //    session.ExpirationDate = DateTime.UtcNow.AddMinutes(sessionTime);
+        //    await _userSessionRepository.UpdateSessionRefreshInfo(session);
+        //    //todo zwroc nowy token
+        //}
 
-        public async Task EndSession(string token)
-        {
-            if (token == null)
-                return;
+        //public async Task EndSession(string token)
+        //{
+        //    if (token == null)
+        //        return;
 
-            Session session = await _userSessionRepository.GetExistingUserSession(token);
-            if (session == null || session.EndTime != null || session.SessionState != SessionState.Open)
-            {
-                return;
-            }
+        //    Session session = await _userSessionRepository.GetExistingUserSession(token);
+        //    if (session == null || session.EndTime != null || session.SessionState != SessionState.Open)
+        //    {
+        //        return;
+        //    }
 
-            session.EndTime = DateTime.UtcNow;
-            session.SessionState = SessionState.Closed;
+        //    session.EndTime = DateTime.UtcNow;
+        //    session.SessionState = SessionState.Closed;
 
-            await _userSessionRepository.UpdateSessionRefreshInfo(session);
-        }
+        //    await _userSessionRepository.UpdateSessionRefreshInfo(session);
+        //}
 
-        public Task<Session> GetExistingUserSession(string token = null)
-        {
-            token = _httpContextAccessor.HttpContext.Request.Headers["Authorize"];
-            return _userSessionRepository.GetExistingUserSessionWithUser(token);
-        }
+        //public Task<Session> GetExistingUserSession(string token = null)
+        //{
+        //    token = _httpContextAccessor.HttpContext.Request.Headers["Authorize"];
+        //    return _userSessionRepository.GetExistingUserSessionWithUser(token);
+        //}
 
         private bool CheckCredentials(User user, string insertedPassword)
         {

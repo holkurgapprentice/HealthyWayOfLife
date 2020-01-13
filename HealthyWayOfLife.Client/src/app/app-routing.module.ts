@@ -20,6 +20,7 @@ import { FormsComponent } from './feature/forms';
           { path: '**', redirectTo: '/public/404' },
         ] },
         { path: 'ui', loadChildren: './feature/ui/ui.module#UIModule' },
+        { path: 'diary', loadChildren: './feature/diary/diary.module#DiaryModule' },
         { path: 'maps', loadChildren: './feature/maps/maps.module#MapsModule' },
         { path: 'public', loadChildren: './feature/pages/pages.module#PagesModule' },
         { path: '**', redirectTo: '/public/404' },

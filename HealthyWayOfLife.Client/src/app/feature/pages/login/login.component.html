@@ -6,7 +6,7 @@
       </div>
       <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone">
         <span class="blank-layout-card-name text-color--white">Sign in</span>
-        <span class="blank-layout-card-secondary-text text-color--smoke">Enter fields to sign in to DARKBOARD</span>
+        <span class="blank-layout-card-secondary-text text-color--smoke">Enter fields to sign in</span>
       </div>
       <form class="login-form" [formGroup]="loginForm" (submit)="login()" autocomplete="off" novalidate>
         <div class="mdl-cell mdl-cell--12-col mdl-cell--4-col-phone">
@@ -43,8 +43,6 @@
               </span>
             </div>
           </div>
-
-          <div class="full-size color-text--red" *ngIf="error"> {{ error }}</div>
 
           <a routerLink="/feature/forgot-password" class="blank-layout-card-link">Forgot password?</a>
         </div>
