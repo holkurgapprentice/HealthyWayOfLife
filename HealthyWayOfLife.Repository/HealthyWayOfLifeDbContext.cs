@@ -39,6 +39,9 @@ namespace HealthyWayOfLife.Repository
                 if (entityEntry.State == EntityState.Added)
                     entityEntry.Entity.InsertDate = DateTime.UtcNow;
 
+                if (entityEntry.State == EntityState.Added)
+                    entityEntry.Entity.IsArchive = 0;
+
                 if (entityEntry.State == EntityState.Modified || entityEntry.State == EntityState.Added)
                     entityEntry.Entity.UpdateDate = DateTime.UtcNow;
             }

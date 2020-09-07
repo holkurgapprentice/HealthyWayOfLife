@@ -5,6 +5,7 @@ import { ThemeModule } from 'theme';
 import { BiometryComponent } from './biometry/biometry.component';
 import { DiaryRoutingModule } from './diary-routing.module';
 import { NotesComponent } from './notes/notes.component';
+import { EditBiometryComponent } from './biometry/edit-biometry/edit-biometry.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { NotesComponent } from './notes/notes.component';
   declarations: [
     BiometryComponent,
     NotesComponent,
+    EditBiometryComponent,
   ],
   providers: [
   ],
